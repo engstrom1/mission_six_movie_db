@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Add A Movie";
+}
+
+@model mission_six_movie_db.Models.MovieFormResponse
+
+
+@*movie form html*@ 
+<div class="text-center">
+    <h1 class="display-4">Add A Movie</h1>
+    <div>
+        <form method="post">
+            <label asp-for="Category">Category: </label>
+            <input asp-for="Category" required/>
+            <br />
+            <label asp-for="Title">Movie Title: </label>
+            <input asp-for="Title" required/>
+            <br />
+            <label asp-for="Year">Year: </label>
+            <input asp-for="Year" required />
+            <br />
+            <label asp-for="Director">Director: </label>
+            <input asp-for="Director" required/>
+            <br />
+            <label asp-for="Rating">Rating: </label>
+            <select asp-for="Rating" required>
+                <option value="G">G</option>
+                <option value="PG">PG</option>
+                <option value="PG-13">PG-13</option>
+                <option value="R">R</option>
+            </select>
+            <br />
+
+            <label asp-for="Edited"> Edited? </label><br />
+            <label for="True">True</label>
+            @Html.RadioButton("Edited", "True")
+            <label for="False">False</label>
+            @Html.RadioButton("Edited", "False")
+            <br />
+            <label asp-for="LentTo">Lent To: </label>
+            <input asp-for="LentTo" />
+            <br />
+            <label asp-for="Notes">Notes: </label>
+            <input asp-for="Notes" />
+            <br />
+            <button type="submit">Add To Collection</button>
+        </form>
+    </div>
+</div>
