@@ -13,7 +13,6 @@ namespace mission_six_movie_db.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private MovieFormContext movieContext { get; set; }
-
         public HomeController(ILogger<HomeController> logger, MovieFormContext x)
         {
             _logger = logger;
@@ -36,18 +35,71 @@ namespace mission_six_movie_db.Controllers
         [HttpGet]
         public IActionResult AddMovieForm()
         {
+            ViewBag.Categories = movieContext.categories.ToList();
             return View();
+        }
+
+        public IActionResult ListAll()
+        { 
+            var movies = movieContext.responses
+                .OrderBy(x=> x.Title)
+                .ToList();
+            return View("ListAll", movies);
         }
 
         // post controller for movie form page
         [HttpPost]
         public IActionResult AddMovieForm(MovieFormResponse mfr)
         {
-            movieContext.Add(mfr);
+            if (ModelState.IsValid)
+            {
+                movieContext.Add(mfr);
+                movieContext.SaveChanges();
+
+                return View("Confirmation", mfr);
+            }
+            else
+            {
+                ViewBag.Categories = movieContext.categories.ToList();
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int movieFormId)
+        {
+            ViewBag.Categories = movieContext.categories.ToList();
+
+            var movieResponse = movieContext.responses.Single(x => x.MovieFormId == movieFormId);
+
+            return View("AddMovieForm", movieResponse);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MovieFormResponse mfr)
+        {
+            movieContext.Update(mfr);
+            movieContext.SaveChanges();
+            return RedirectToAction("ListAll");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int movieFormId)
+        {
+            var movieResponse = movieContext.responses.Single(x => x.MovieFormId == movieFormId);
+
+            return View(movieResponse);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(MovieFormResponse mfr)
+        {
+            movieContext.responses.Remove(mfr);
             movieContext.SaveChanges();
 
-            return View("Confirmation", mfr);
+            return RedirectToAction("ListAll");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

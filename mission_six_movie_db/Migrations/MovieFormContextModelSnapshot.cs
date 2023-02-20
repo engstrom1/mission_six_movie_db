@@ -15,15 +15,45 @@ namespace mission_six_movie_db.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("mission_six_movie_db.Models.Category", b =>
+                {
+                    b.Property<int>("CatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CatId");
+
+                    b.ToTable("categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CatId = 1,
+                            CategoryName = "Disney"
+                        },
+                        new
+                        {
+                            CatId = 2,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CatId = 3,
+                            CategoryName = "Fantasy"
+                        });
+                });
+
             modelBuilder.Entity("mission_six_movie_db.Models.MovieFormResponse", b =>
                 {
                     b.Property<int>("MovieFormId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -52,13 +82,15 @@ namespace mission_six_movie_db.Migrations
 
                     b.HasKey("MovieFormId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("responses");
 
                     b.HasData(
                         new
                         {
                             MovieFormId = 1,
-                            Category = "Disney",
+                            CategoryId = 1,
                             Director = "Mark Dindal",
                             Edited = false,
                             Notes = "World's best movie",
@@ -69,7 +101,7 @@ namespace mission_six_movie_db.Migrations
                         new
                         {
                             MovieFormId = 2,
-                            Category = "Comedy",
+                            CategoryId = 2,
                             Director = "Jonathan Lynn",
                             Edited = false,
                             Rating = "R",
@@ -79,13 +111,22 @@ namespace mission_six_movie_db.Migrations
                         new
                         {
                             MovieFormId = 3,
-                            Category = "Fantasy",
+                            CategoryId = 3,
                             Director = "Hayao Miyazaki",
                             Edited = false,
                             Rating = "G",
                             Title = "My Neighbor Totoro",
                             Year = 1988
                         });
+                });
+
+            modelBuilder.Entity("mission_six_movie_db.Models.MovieFormResponse", b =>
+                {
+                    b.HasOne("mission_six_movie_db.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

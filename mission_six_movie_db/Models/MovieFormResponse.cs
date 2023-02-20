@@ -13,8 +13,10 @@ namespace mission_six_movie_db.Models
         [Required]
         public int MovieFormId { get; set; }
 
-        [Required]
-        public string Category { get; set; }
+        // set relationship to other table
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -28,7 +30,6 @@ namespace mission_six_movie_db.Models
         [Required]
         public string Rating { get; set; }
 
-        [Required]
         public bool Edited { get; set; }
         public string LentTo { get; set; }
 

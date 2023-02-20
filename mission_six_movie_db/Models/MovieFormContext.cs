@@ -15,16 +15,23 @@ namespace mission_six_movie_db.Models
         }
 
         public DbSet<MovieFormResponse> responses { get; set; }
+        public DbSet<Category> categories { get; set; }
 
         // seeding database
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category { CatId = 1, CategoryName = "Disney" },
+                new Category { CatId = 2, CategoryName = "Comedy" },
+                new Category { CatId = 3, CategoryName = "Fantasy" }
+                );
+
             mb.Entity<MovieFormResponse>().HasData(
 
                 new MovieFormResponse
                 {
                     MovieFormId = 1,
-                    Category = "Disney",
+                    CategoryId = 1,
                     Title = "Emperor's New Groove",
                     Year = 2000,
                     Director = "Mark Dindal",
@@ -35,7 +42,7 @@ namespace mission_six_movie_db.Models
                 new MovieFormResponse
                 {
                     MovieFormId = 2,
-                    Category = "Comedy",
+                    CategoryId = 2,
                     Title = "My Cousin Vinny",
                     Year = 1992,
                     Director = "Jonathan Lynn",
@@ -45,7 +52,7 @@ namespace mission_six_movie_db.Models
                 new MovieFormResponse
                 {
                     MovieFormId = 3,
-                    Category = "Fantasy",
+                    CategoryId = 3,
                     Title = "My Neighbor Totoro",
                     Year = 1988,
                     Director = "Hayao Miyazaki",
